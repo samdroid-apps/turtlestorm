@@ -19,7 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 var get = function (url, blk) {
     if (window.nxtURL === undefined) {
-        errorMsg('You haven\'t connected to the NXT yet', blk);
+        logo.errorMsg('You haven\'t connected to the NXT yet', blk);
         return '';
     }
     try {
@@ -28,7 +28,7 @@ var get = function (url, blk) {
         request.send(null);
         return request.responseText;
     } catch (e) {
-        errorMsg('Error with NXT', blk);
+        logo.errorMsg('Error with NXT', blk);
     }
     return '';
 };
@@ -37,7 +37,7 @@ var validPort = function (port, blk) {
     if (0 < port <= 4) {
         return true;
     } else {
-        errorMsg('Port must be from 1 to 4', blk);
+        logo.errorMsg('Port must be from 1 to 4', blk);
         return false;
     }
 };
@@ -46,21 +46,21 @@ var validColor = function (color, blk) {
     if (['red', 'green', 'blue', 'none', 'all'].indexOf(color) !== -1) {
         return true;
     } else {
-        errorMsg('Invalid color.  Use green, red, blue, all or none', blk);
+        logo.errorMsg('Invalid color.  Use green, red, blue, all or none', blk);
         return false;
     }
 };
 
 //* flow-globals *//
 
-var block = blocks.blockList[blk];
+var block = logo.blocks.blockList[blk];
 var conns = block.connections;
 
 var vaildMotor = function (motor, blk) {
     if (['A', 'B', 'C'].indexOf(motor.toUpperCase()) !== -1) {
         return true;
     } else {
-        errorMsg('Motor must be either A, B or C', blk);
+        logo.errorMsg('Motor must be either A, B or C', blk);
         return false;
     }
 };
@@ -69,14 +69,14 @@ var validPower = function (power, blk) {
     if (-127 < power <= 128) {
         return true;
     } else {
-        errorMsg('Power must be between -127 and 128', blk);
+        logo.errorMsg('Power must be between -127 and 128', blk);
         return false;
     }
 };
 
 //* arg-globals *//
 
-var block = blocks.blockList[blk];
+var block = logo.blocks.blockList[blk];
 var conns = block.connections;
 
 //* block-globals *//
@@ -98,7 +98,7 @@ block.docks[1][2] = 'anyin';
 block.defaults.push('localhost');
 block.staticLabels.push('connect');
 //* flow:connectToNxt *//
-window.nxtURL = parseArg(activity, turtle, conns[1]);
+window.nxtURL = logo.parseArg(logo, turtle, conns[1]);
 
 //* block:motorStart *//
 var block = new ProtoBlock('motorStart');
@@ -109,8 +109,8 @@ block.docks[1][2] = 'anyin';
 block.defaults.push('A', 100);
 block.staticLabels.push('start', 'motor', 'power');
 //* flow:motorStart *//
-var motor = parseArg(activity, turtle, conns[1]);
-var power = parseArg(activity, turtle, conns[2]);
+var motor = logo.parseArg(logo, turtle, conns[1]);
+var power = logo.parseArg(logo, turtle, conns[2]);
 if (vaildMotor(motor, blk) && validPower(power, blk)) {
     get('/motor/' + motor + '/start/' + power);
 };
@@ -124,8 +124,8 @@ block.docks[1][2] = 'anyin';
 block.defaults.push('A', 360);
 block.staticLabels.push('turn', 'motor', 'deg');
 //* flow:motorTurn *//
-var motor = parseArg(activity, turtle, conns[1]);
-var deg   = parseArg(activity, turtle, conns[2]);
+var motor = logo.parseArg(logo, turtle, conns[1]);
+var deg   = logo.parseArg(logo, turtle, conns[2]);
 if (vaildMotor(motor, blk)) {
     var power = 75;
     if (deg < 0) {
@@ -144,7 +144,7 @@ block.docks[1][2] = 'anyin';
 block.defaults.push('A');
 block.staticLabels.push('stop');
 //* flow:motorStop *//
-var motor = parseArg(activity, turtle, conns[1]);
+var motor = logo.parseArg(logo, turtle, conns[1]);
 if (vaildMotor(motor, blk)) {
     get('/motor/' + motor + '/stop');
 };
@@ -158,7 +158,7 @@ block.docks[1][2] = 'anyin';
 block.defaults.push('A');
 block.staticLabels.push('idle');
 //* flow:motorIdle *//
-var motor = parseArg(activity, turtle, conns[1]);
+var motor = logo.parseArg(logo, turtle, conns[1]);
 if (vaildMotor(motor, blk)) {
     get('/motor/' + motor + '/idle');
 };
@@ -173,8 +173,8 @@ block.docks[2][2] = 'anyin';
 block.defaults.push(3, 'red');
 block.staticLabels.push('LED', 'port', 'color');
 //* flow:colorLED *//
-var port = parseArg(activity, turtle, conns[1]);
-var color = parseArg(activity, turtle, conns[2]).toLowerCase();
+var port = logo.parseArg(logo, turtle, conns[1]);
+var color = logo.parseArg(logo, turtle, conns[2]).toLowerCase();
 if (validPort(port, blk) && validColor(color, blk)) {
     get('/led/' + port + '/' + color);
 };
@@ -188,7 +188,7 @@ block.docks[1][2] = 'numberin';
 block.defaults.push(2);
 block.staticLabels.push('touch');
 //* arg:sensorTouch *//
-var port = parseArg(activity, turtle, conns[1]);
+var port = logo.parseArg(logo, turtle, conns[1]);
 if (validPort(port, blk)) {
     if (get('/touch/' + port) === '1') {
         block.value = true;
@@ -205,7 +205,7 @@ block.oneArgMathBlock();
 block.defaults.push(1);
 block.staticLabels.push('ultrasonic');
 //* arg:sensorUltrasonic *//
-var port = parseArg(activity, turtle, conns[1]);
+var port = logo.parseArg(logo, turtle, conns[1]);
 if (validPort(port, blk)) {
     block.value = parseInt(get('/ultrasonic/' + port));
 };
@@ -218,7 +218,7 @@ block.oneArgMathBlock();
 block.defaults.push(3);
 block.staticLabels.push('lightness');
 //* arg:sensorLight *//
-var port = parseArg(activity, turtle, conns[1]);
+var port = logo.parseArg(logo, turtle, conns[1]);
 if (validPort(port, blk)) {
     block.value = parseInt(get('/light/' + port)) / 13 * 100;
 };
@@ -235,8 +235,8 @@ block.docks[1][2] = 'anyin';
 block.defaults.push('red', 3);
 block.staticLabels.push('reflect', 'color', 'port');
 /* arg:sensorLightReflect *//
-var color = parseArg(activity, turtle, conns[1]);
-var port = parseArg(activity, turtle, conns[2]);
+var color = logo.parseArg(logo, turtle, conns[1]);
+var port = logo.parseArg(logo, turtle, conns[2]);
 if (validPort(port, blk) && validColor(color, blk)) {
     block.value = parseInt(get('/light/' + port + '/reflect/' + color)) / 10;
 };
@@ -249,7 +249,7 @@ block.oneArgMathBlock();
 block.defaults.push(3);
 block.staticLabels.push('color');
 //* arg:sensorColor *//
-var port = parseArg(activity, turtle, conns[1]);
+var port = logo.parseArg(logo, turtle, conns[1]);
 if (validPort(port, blk)) {
     block.value = parseInt(get('/color/' + port));
 };
