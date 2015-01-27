@@ -7,19 +7,19 @@ It supports the motors, color sensor, touch sensor and ultrasonic sensor.
 
 1. Install deps
 
-    yum install pyusb
-    pip install python-nxt
+        yum install pyusb
+        pip install python-nxt
 
 2. Start the NXT server
 
-    python server.py
+        python server.py
 
 3. Start turtle art (this plugin **does not** work with t.sl.o, as it is causes
    https mixed content warnings):
 
-    git clone https://github.com/walterbender/turtleblocksjs
-    cd turtleblocksjs
-    python -m SimpleHTTPServer
+        git clone https://github.com/walterbender/turtleblocksjs
+        cd turtleblocksjs
+        python -m SimpleHTTPServer
 
 4. Load `nxt.json` plugin and have fun!
 
