@@ -8,7 +8,7 @@ It supports the motors, color sensor, touch sensor and ultrasonic sensor.
 1. Install deps
 
         yum install pyusb
-        pip install python-nxt
+        pip install nxt-python
 
 2. Start the NXT server
 
