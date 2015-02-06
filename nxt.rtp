@@ -94,7 +94,7 @@ var block = new ProtoBlock('connectToNxt');
 block.palette = palettes.dict['NXT'];
 blocks.protoBlockDict['connectToNxt'] = block;
 block.oneArgBlock();
-block.docks[1][2] = 'anyin';
+block.dockTypes[1] = 'anyin';
 block.defaults.push('localhost');
 block.staticLabels.push('connect');
 //* flow:connectToNxt *//
@@ -105,7 +105,7 @@ var block = new ProtoBlock('motorStart');
 block.palette = palettes.dict['NXT'];
 blocks.protoBlockDict['motorStart'] = block;
 block.twoArgBlock();
-block.docks[1][2] = 'anyin';
+block.dockTypes[1] = 'anyin';
 block.defaults.push('A', 100);
 block.staticLabels.push('start', 'motor', 'power');
 //* flow:motorStart *//
@@ -120,7 +120,7 @@ var block = new ProtoBlock('motorTurn');
 block.palette = palettes.dict['NXT'];
 blocks.protoBlockDict['motorTurn'] = block;
 block.twoArgBlock();
-block.docks[1][2] = 'anyin';
+block.dockTypes[1] = 'anyin';
 block.defaults.push('A', 360);
 block.staticLabels.push('turn', 'motor', 'deg');
 //* flow:motorTurn *//
@@ -140,7 +140,7 @@ var block = new ProtoBlock('motorStop');
 block.palette = palettes.dict['NXT'];
 blocks.protoBlockDict['motorStop'] = block;
 block.oneArgBlock();
-block.docks[1][2] = 'anyin';
+block.dockTypes[1] = 'anyin';
 block.defaults.push('A');
 block.staticLabels.push('stop');
 //* flow:motorStop *//
@@ -154,7 +154,7 @@ var block = new ProtoBlock('motorIdle');
 block.palette = palettes.dict['NXT'];
 blocks.protoBlockDict['motorIdle'] = block;
 block.oneArgBlock();
-block.docks[1][2] = 'anyin';
+block.dockTypes[1] = 'anyin';
 block.defaults.push('A');
 block.staticLabels.push('idle');
 //* flow:motorIdle *//
@@ -168,8 +168,8 @@ var block = new ProtoBlock('colorLED');
 block.palette = palettes.dict['NXT'];
 blocks.protoBlockDict['colorLED'] = block;
 block.twoArgBlock();
-block.docks[1][2] = 'numberinin';
-block.docks[2][2] = 'anyin';
+block.dockTypes[1] = 'numberinin';
+block.dockTypes[2] = 'anyin';
 block.defaults.push(3, 'red');
 block.staticLabels.push('LED', 'port', 'color');
 //* flow:colorLED *//
@@ -184,7 +184,7 @@ var block = new ProtoBlock('sensorTouch');
 block.palette = palettes.dict['NXT'];
 blocks.protoBlockDict['sensorTouch'] = block;
 block.booleanOneArgBlock();
-block.docks[1][2] = 'numberin';
+block.dockTypes[1] = 'numberin';
 block.defaults.push(2);
 block.staticLabels.push('touch');
 //* arg:sensorTouch *//
@@ -231,7 +231,7 @@ var block = new ProtoBlock('sensorLightReflect');
 block.palette = palettes.dict['NXT'];
 blocks.protoBlockDict['sensorLightReflect'] = block;
 block.twoArgMathBlock();
-block.docks[1][2] = 'anyin';
+block.dockTypes[1] = 'anyin';
 block.defaults.push('red', 3);
 block.staticLabels.push('reflect', 'color', 'port');
 /* arg:sensorLightReflect *//
