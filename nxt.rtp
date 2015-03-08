@@ -17,7 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 //* globals *//
 
-var get = function (url, blk) {
+var get = function (logo, url, blk) {
     if (window.nxtURL === undefined) {
         logo.errorMsg('You haven\'t connected to the NXT yet', blk);
         return '';
@@ -33,7 +33,7 @@ var get = function (url, blk) {
     return '';
 };
 
-var validPort = function (port, blk) {
+var validPort = function (logo, port, blk) {
     if (0 < port <= 4) {
         return true;
     } else {
@@ -42,7 +42,7 @@ var validPort = function (port, blk) {
     }
 };
 
-var validColor = function (color, blk) {
+var validColor = function (logo, color, blk) {
     if (['red', 'green', 'blue', 'none', 'all'].indexOf(color) !== -1) {
         return true;
     } else {
@@ -51,12 +51,7 @@ var validColor = function (color, blk) {
     }
 };
 
-//* flow-globals *//
-
-var block = logo.blocks.blockList[blk];
-var conns = block.connections;
-
-var vaildMotor = function (motor, blk) {
+var vaildMotor = function (logo, motor, blk) {
     if (['A', 'B', 'C'].indexOf(motor.toUpperCase()) !== -1) {
         return true;
     } else {
@@ -65,7 +60,7 @@ var vaildMotor = function (motor, blk) {
     }
 };
 
-var validPower = function (power, blk) {
+var validPower = function (logo, power, blk) {
     if (-127 < power <= 128) {
         return true;
     } else {
@@ -73,6 +68,13 @@ var validPower = function (power, blk) {
         return false;
     }
 };
+
+//* flow-globals *//
+
+console.log(logo);
+var block = logo.blocks.blockList[blk];
+console.log(logo);
+var conns = block.connections;
 
 //* arg-globals *//
 
@@ -111,8 +113,8 @@ block.staticLabels.push('start', 'motor', 'power');
 //* flow:motorStart *//
 var motor = logo.parseArg(logo, turtle, conns[1]);
 var power = logo.parseArg(logo, turtle, conns[2]);
-if (vaildMotor(motor, blk) && validPower(power, blk)) {
-    get('/motor/' + motor + '/start/' + power);
+if (vaildMotor(logo, motor, blk) && validPower(logo, power, blk)) {
+    get(logo, '/motor/' + motor + '/start/' + power);
 };
 
 //* block:motorTurn *//
@@ -126,13 +128,13 @@ block.staticLabels.push('turn', 'motor', 'deg');
 //* flow:motorTurn *//
 var motor = logo.parseArg(logo, turtle, conns[1]);
 var deg   = logo.parseArg(logo, turtle, conns[2]);
-if (vaildMotor(motor, blk)) {
+if (vaildMotor(logo, motor, blk)) {
     var power = 75;
     if (deg < 0) {
         deg = Math.abs(deg);
         power = -75;
     }
-    get('/motor/' + motor + '/turn/' + deg + '/' + power);
+    get(logo, '/motor/' + motor + '/turn/' + deg + '/' + power);
 };
 
 //* block:motorStop *//
@@ -145,8 +147,8 @@ block.defaults.push('A');
 block.staticLabels.push('stop');
 //* flow:motorStop *//
 var motor = logo.parseArg(logo, turtle, conns[1]);
-if (vaildMotor(motor, blk)) {
-    get('/motor/' + motor + '/stop');
+if (vaildMotor(logo, motor, blk)) {
+    get(logo, '/motor/' + motor + '/stop');
 };
 
 //* block:motorIdle *//
@@ -158,9 +160,10 @@ block.dockTypes[1] = 'anyin';
 block.defaults.push('A');
 block.staticLabels.push('idle');
 //* flow:motorIdle *//
+console.log(logo)
 var motor = logo.parseArg(logo, turtle, conns[1]);
-if (vaildMotor(motor, blk)) {
-    get('/motor/' + motor + '/idle');
+if (vaildMotor(logo, motor, blk)) {
+    get(logo, '/motor/' + motor + '/idle');
 };
 
 //* block:colorLED *//
@@ -175,9 +178,10 @@ block.staticLabels.push('LED', 'port', 'color');
 //* flow:colorLED *//
 var port = logo.parseArg(logo, turtle, conns[1]);
 var color = logo.parseArg(logo, turtle, conns[2]).toLowerCase();
-if (validPort(port, blk) && validColor(color, blk)) {
-    get('/led/' + port + '/' + color);
+if (validPort(logo, port, blk) && validColor(logo, color, blk)) {
+    get(logo, '/led/' + port + '/' + color);
 };
+
 
 //* block:sensorTouch *//
 var block = new ProtoBlock('sensorTouch');
@@ -187,10 +191,10 @@ block.booleanOneArgBlock();
 block.dockTypes[1] = 'numberin';
 block.defaults.push(2);
 block.staticLabels.push('touch');
-//* arg:sensorTouch *//
+//( arg:sensorTouch (//
 var port = logo.parseArg(logo, turtle, conns[1]);
-if (validPort(port, blk)) {
-    if (get('/touch/' + port) === '1') {
+if (validPort(logo, port, blk)) {
+    if (get('logo, /touch/' + port) === '1') {
         block.value = true;
     } else {
         block.value = false;
@@ -206,8 +210,8 @@ block.defaults.push(1);
 block.staticLabels.push('ultrasonic');
 //* arg:sensorUltrasonic *//
 var port = logo.parseArg(logo, turtle, conns[1]);
-if (validPort(port, blk)) {
-    block.value = parseInt(get('/ultrasonic/' + port));
+if (validPort(logo, port, blk)) {
+    block.value = parseInt(get(logo, '/ultrasonic/' + port));
 };
 
 //* block:sensorLight *//
@@ -219,8 +223,8 @@ block.defaults.push(3);
 block.staticLabels.push('lightness');
 //* arg:sensorLight *//
 var port = logo.parseArg(logo, turtle, conns[1]);
-if (validPort(port, blk)) {
-    block.value = parseInt(get('/light/' + port)) / 13 * 100;
+if (validPort(logo, port, blk)) {
+    block.value = parseInt(get(logo, '/light/' + port)) / 13 * 100;
 };
 
 //* comment *//
@@ -237,8 +241,9 @@ block.staticLabels.push('reflect', 'color', 'port');
 /* arg:sensorLightReflect *//
 var color = logo.parseArg(logo, turtle, conns[1]);
 var port = logo.parseArg(logo, turtle, conns[2]);
-if (validPort(port, blk) && validColor(color, blk)) {
-    block.value = parseInt(get('/light/' + port + '/reflect/' + color)) / 10;
+if (validPort(logo, port, blk) && validColor(logo, color, blk)) {
+    block.value = parseInt(get(logo, '/light/' + port + '/reflect/' + color))
+                  / 10;
 };
 
 //* block:sensorColor *//
@@ -250,8 +255,8 @@ block.defaults.push(3);
 block.staticLabels.push('color');
 //* arg:sensorColor *//
 var port = logo.parseArg(logo, turtle, conns[1]);
-if (validPort(port, blk)) {
-    block.value = parseInt(get('/color/' + port));
+if (validPort(logo, port, blk)) {
+    block.value = parseInt(logo, get('/color/' + port));
 };
 
 //* block:black *// staticBlock('black')
