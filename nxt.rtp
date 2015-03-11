@@ -34,10 +34,11 @@ var get = function (logo, url, blk) {
 };
 
 var validPort = function (logo, port, blk) {
-    if (0 < port <= 4) {
+    if (0 < port && port <= window.nxtInfo.sensors) {
         return true;
     } else {
-        logo.errorMsg('Port must be from 1 to 4', blk);
+        logo.errorMsg('Port must be from 1 to '
+                      + window.nxtInfo.sensors, blk);
         return false;
     }
 };
@@ -52,10 +53,11 @@ var validColor = function (logo, color, blk) {
 };
 
 var vaildMotor = function (logo, motor, blk) {
-    if (['A', 'B', 'C'].indexOf(motor.toUpperCase()) !== -1) {
+    if (window.nxtInfo.motors.indexOf(motor.toUpperCase()) !== -1) {
         return true;
     } else {
-        logo.errorMsg('Motor must be either A, B or C', blk);
+        logo.errorMsg('Motor must be either '
+                      + window.nxtInfo.motors.join(', '), blk);
         return false;
     }
 };
@@ -101,6 +103,8 @@ block.defaults.push('localhost');
 block.staticLabels.push('connect');
 //* flow:connectToNxt *//
 window.nxtURL = logo.parseArg(logo, turtle, conns[1]);
+j = JSON.parse(get(logo, '/about'));
+window.nxtInfo = j;
 
 //* block:motorStart *//
 var block = new ProtoBlock('motorStart');

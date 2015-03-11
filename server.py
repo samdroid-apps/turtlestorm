@@ -26,6 +26,10 @@ def cross_domain(response):
 def are_you_a_robot():
     return 'yes'
 
+@app.route('/about')
+def about():
+    return jsonify(motors=['A', 'B', 'C'], sensors=4)
+
 @app.route('/motor/<letter>/start/<power>')
 def motor_start(letter, power):
     m = Motor(b, MOTORS[letter.upper()])

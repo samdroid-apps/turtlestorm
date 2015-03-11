@@ -29,6 +29,15 @@ It supports the motors, color sensor, touch sensor and ultrasonic sensor.
    
 Returns `yes`
 
+	GET /about
+
+Returns a list of motor letters and the number of sensor ports.  Eg:
+
+    {
+        "sensors": 4,
+        "motors": ["A", "B", "C", "D"]
+    }
+
 ## Motors
 
 	GET /motor/<letter>/start/<power>
@@ -55,6 +64,8 @@ Returns the distance in centimeters
 
 Change the color sensor LED.  Color options are `blue`, `red`, `green`, `all`, `none`.  `none` turns the light off.
 
+NXT only
+
 	GET /light/<port>
 
 Returns the lightness from 13 to 0
@@ -69,3 +80,10 @@ Returns the reflected light using a given color.  From 0 to 1000 (probably).
 
 Returns the color from 1 to 6.
 
+    GET /gyro/angle/<port>
+
+    GET /gyro/angle/<port>
+
+The gyro apis do something... I don't really know.
+
+EV3 only.
