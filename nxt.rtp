@@ -24,7 +24,7 @@ var get = function (logo, url, blk) {
     }
     try {
         var request = new XMLHttpRequest();
-        request.open('GET', 'http://' + window.nxtURL + ':5002' +  url, false);
+        request.open('GET', 'http://' + window.nxtURL + ':5002' + url, false);
         request.send(null);
         return request.responseText;
     } catch (e) {
@@ -199,6 +199,32 @@ if (validPort(logo, port, blk)) {
     } else {
         block.value = false;
     };
+};
+
+//* block:sensorGyroAngle *//
+var block = new ProtoBlock('sensorGyroAngle');
+block.palette = palettes.dict['NXT'];
+blocks.protoBlockDict['sensorGyroAngle'] = block;
+block.oneArgMathBlock();
+block.defaults.push(2);
+block.staticLabels.push('angle');
+//* arg:sensorGyroAngle *//
+var port = logo.parseArg(logo, turtle, conns[1]);
+if (validPort(logo, port, blk)) {
+    block.value = parseInt(get(logo, '/gyro/angle/' + port));
+};
+
+//* block:sensorGyroRate *//
+var block = new ProtoBlock('sensorGyroRate');
+block.palette = palettes.dict['NXT'];
+blocks.protoBlockDict['sensorGyroRate'] = block;
+block.oneArgMathBlock();
+block.defaults.push(2);
+block.staticLabels.push('rate');
+//* arg:sensorGyroRate *//
+var port = logo.parseArg(logo, turtle, conns[1]);
+if (validPort(logo, port, blk)) {
+    block.value = parseInt(get(logo, '/gyro/rate/' + port));
 };
 
 //* block:sensorUltrasonic *//
